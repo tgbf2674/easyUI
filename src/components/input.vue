@@ -1,10 +1,10 @@
 <template>
   <div class="search-container">
-    <div class="search-input gray">
+    <div class="search-input gray" :class="{'icon-placeholder-left': isFocus || notEmpty}" >
       <svg class="icon search-icon" aria-hidden="true">
         <use xlink:href="#icon-search"></use>
       </svg>
-      <input type="text" placeholder="搜索"/>
+      <input v-model="val" type="text" placeholder="搜索" @focus="handlerFocus" @blur="handlerBlur"/>
       <svg class="icon reset-icon" aria-hidden="true">
         <use xlink:href="#icon-clear"></use>
       </svg>
@@ -17,8 +17,26 @@
 </template>
 
 <script>
+import {computed, ref} from 'vue'
+
 export default {
-  name: 'input'
+  name: 'input',
+  setup(){
+    let isFocus = ref(false)
+    let val = ref('')
+    const notEmpty = computed(()=>{
+      return val.value !== ''
+    })
+    const handlerFocus =()=>{
+      isFocus.value = true
+    }
+    const handlerBlur=()=>{
+      isFocus.value= false
+    }
+    return {
+      isFocus,handlerFocus,handlerBlur,notEmpty,val
+    }
+  }
 }
 </script>
 
@@ -59,7 +77,18 @@ $color-btn-primary: #4a70ff
     border-radius: 18px
     height: 36px
     flex: 1
-
+    &.icon-placeholder-left
+      .search-icon
+        left: 5px !important
+      input
+        margin-left: 19px !important
+        caret-color: $color-btn-primary !important
+        &::placeholder
+          text-align: left !important
+        &::-ms-input-placeholder
+          text-align: left !important
+        &::-webkit-input-placeholder
+          text-align: left !important
     &.gray
       background: $color-input-search-bg-gray
     .search-icon
