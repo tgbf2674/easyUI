@@ -5,7 +5,7 @@
         <use xlink:href="#icon-search"></use>
       </svg>
       <input v-model="val" type="text" placeholder="搜索" @focus="handlerFocus" @blur="handlerBlur"/>
-      <svg class="icon reset-icon" aria-hidden="true">
+      <svg v-show="notEmpty" @click="handlerResetSearch" class="icon reset-icon" aria-hidden="true">
         <use xlink:href="#icon-clear"></use>
       </svg>
     </div>
@@ -27,6 +27,9 @@ export default {
     const notEmpty = computed(()=>{
       return val.value !== ''
     })
+    const handlerResetSearch=()=>{
+      val.value = ''
+    }
     const handlerFocus =()=>{
       isFocus.value = true
     }
@@ -34,7 +37,7 @@ export default {
       isFocus.value= false
     }
     return {
-      isFocus,handlerFocus,handlerBlur,notEmpty,val
+      isFocus,handlerFocus,handlerBlur,notEmpty,val,handlerResetSearch
     }
   }
 }
