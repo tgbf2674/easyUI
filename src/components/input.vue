@@ -9,7 +9,7 @@
         <use xlink:href="#icon-clear"></use>
       </svg>
     </div>
-    <div v-show="notEmpty" class="search-btn-group">
+    <div v-show="isFocus || notEmpty" class="search-btn-group">
       <span class="search-btn primary">搜索</span>
       <span @mousedown="handlerCancel" class="search-btn">取消</span>
     </div>
