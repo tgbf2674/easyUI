@@ -1,17 +1,17 @@
 <template>
   <div class="search-container">
     <div class="search-input gray">
-      <svg class="icon" aria-hidden="true">
+      <svg class="icon search-icon" aria-hidden="true">
         <use xlink:href="#icon-search"></use>
       </svg>
-      <input type="text" placeholder="请搜索"/>
-      <svg class="icon" aria-hidden="true">
+      <input type="text" placeholder="搜索"/>
+      <svg class="icon reset-icon" aria-hidden="true">
         <use xlink:href="#icon-clear"></use>
       </svg>
     </div>
     <div class="search-btn-group">
-      <span>搜索</span>
-      <span>取消</span>
+      <span class="search-btn primary">搜索</span>
+      <span class="search-btn">取消</span>
     </div>
   </div>
 </template>
@@ -39,6 +39,16 @@ $color-btn-primary: #4a70ff
 
   .search-btn-group
     line-height: 36px
+    .search-btn
+      display: inline-flex
+      margin-left: 10px
+      width: 32px
+      font-size: 16px
+      line-height: 22px
+      font-family: PingFangSC,sans-serif
+      color: $color-btn-default
+    .primary
+      color: $color-btn-primary
 
   .search-input
     position: relative
@@ -52,6 +62,14 @@ $color-btn-primary: #4a70ff
 
     &.gray
       background: $color-input-search-bg-gray
+    .search-icon
+      position: absolute
+      left: calc(50% - 44px)
+      width: 16px
+      height: 16px
+    .reset-icon
+      width: 24px
+      height: 24px
 
     input
       margin-left: 4px
