@@ -1,7 +1,7 @@
 <template>
   <div class="search-container">
     <div class="search-input gray" :class="{'icon-placeholder-left': isFocus || notEmpty}" >
-      <svg class="icon search-icon" aria-hidden="true">
+      <svg @mousedown="handlerIcon" class="icon search-icon" aria-hidden="true">
         <use xlink:href="#icon-search"></use>
       </svg>
       <input @keyup.enter="handlerSearchEnter" v-model="val" type="text" placeholder="搜索" @focus="handlerFocus" @blur="handlerBlur"/>
@@ -17,7 +17,7 @@
 </template>
 
 <script>
-import {computed, ref} from 'vue'
+import {computed, ref, watch} from 'vue'
 
 export default {
   name: 'input',
@@ -26,6 +26,15 @@ export default {
     let val = ref('')
     const notEmpty = computed(()=>{
       return val.value !== ''
+    })
+    watch(val,(newVal,oldVal)=>{
+      const isDiff = newVal !== oldVal
+      if(isDiff){
+        emitOnChange(newVal,oldVal)
+      }
+      if(isDiff && newVal=== ''){
+        emitOnSearch()
+      }
     })
     const handlerSearchEnter= (event)=>{
       event.preventDefault()
@@ -38,11 +47,18 @@ export default {
     const emitOnPressEnter = ()=>{
       context.emit('on-press-enter',val.value)
     }
+    const emitOnChange=(newVal,oldVal)=>{
+      context.emit('on-change',newVal,oldVal)
+    }
     const handlerSearch =()=>{
       emitOnSearch()
     }
     const handlerCancel = ()=>{
       val.value = ''
+      emitOnSearch()
+    }
+    const handlerIcon = (event)=>{
+      event.preventDefault()
     }
     const handlerResetSearch=(event)=>{
       event.preventDefault()
@@ -55,7 +71,7 @@ export default {
       isFocus.value= false
     }
     return {
-      isFocus,handlerFocus,handlerBlur,notEmpty,val,handlerResetSearch,handlerCancel,handlerSearch,handlerSearchEnter
+      handlerIcon,isFocus,handlerFocus,handlerBlur,notEmpty,val,handlerResetSearch,handlerCancel,handlerSearch,handlerSearchEnter
     }
   }
 }
