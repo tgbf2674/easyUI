@@ -3,12 +3,23 @@
   export default {
     components:{
       SearchInput
+    },
+    setup(){
+      const handlerSearch = (val)=>{
+        alert(val)
+      }
+      const handlerEnter = (val)=>{
+        alert(`on-press-enter${val}`)
+      }
+      return {
+        handlerSearch
+      }
     }
   }
 </script>
 
 <template>
-  <SearchInput/>
+  <SearchInput @on-press-enter="handlerEnter" @on-search="handlerSearch"/>
 </template>
 
 <style>

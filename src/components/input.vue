@@ -4,13 +4,13 @@
       <svg class="icon search-icon" aria-hidden="true">
         <use xlink:href="#icon-search"></use>
       </svg>
-      <input v-model="val" type="text" placeholder="搜索" @focus="handlerFocus" @blur="handlerBlur"/>
+      <input @keyup.enter="handlerSearchEnter" v-model="val" type="text" placeholder="搜索" @focus="handlerFocus" @blur="handlerBlur"/>
       <svg v-show="notEmpty" @mousedown="handlerResetSearch" class="icon reset-icon" aria-hidden="true">
         <use xlink:href="#icon-clear"></use>
       </svg>
     </div>
     <div v-show="isFocus || notEmpty" class="search-btn-group">
-      <span class="search-btn primary">搜索</span>
+      <span @mousedown="handlerSearch" class="search-btn primary">搜索</span>
       <span @mousedown="handlerCancel" class="search-btn">取消</span>
     </div>
   </div>
@@ -21,12 +21,26 @@ import {computed, ref} from 'vue'
 
 export default {
   name: 'input',
-  setup(){
+  setup(props,context){
     let isFocus = ref(false)
     let val = ref('')
     const notEmpty = computed(()=>{
       return val.value !== ''
     })
+    const handlerSearchEnter= (event)=>{
+      event.preventDefault()
+      emitOnPressEnter()
+      emitOnSearch()
+    }
+    const emitOnSearch= ()=>{
+      context.emit('on-search',val.value)
+    }
+    const emitOnPressEnter = ()=>{
+      context.emit('on-press-enter',val.value)
+    }
+    const handlerSearch =()=>{
+      emitOnSearch()
+    }
     const handlerCancel = ()=>{
       val.value = ''
     }
@@ -41,7 +55,7 @@ export default {
       isFocus.value= false
     }
     return {
-      isFocus,handlerFocus,handlerBlur,notEmpty,val,handlerResetSearch,handlerCancel
+      isFocus,handlerFocus,handlerBlur,notEmpty,val,handlerResetSearch,handlerCancel,handlerSearch,handlerSearchEnter
     }
   }
 }
