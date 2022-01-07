@@ -1,24 +1,42 @@
 <template>
-  <drawer palace="left" v-model:open="open">
-    <h1>123</h1>
-  </drawer>
-  <button @click="openDrawer">open drawer</button>
+  <breadcrumb separator=">">
+    <breadcrumb-item v-for="(item,index) in nav" :to="{path: item.path}" :key="index">{{item.text}}</breadcrumb-item>
+  </breadcrumb>
 </template>
 
 <script>
-import drawer from './components/drawer/drawer.vue'
-import {ref} from 'vue'
+import breadcrumb from './components/breadcrumb/breadcrumb.vue'
+import breadcrumbItem from './components/breadcrumb/breadcrumb-item.vue'
+import {computed, reactive} from 'vue'
 export default {
   components:{
-    drawer
+    breadcrumb,breadcrumbItem
   },
   setup(){
-    const open = ref(false)
-    const openDrawer = ()=>{
-      open.value = true
-    }
+    const options = reactive([
+      {
+        text: 'one',
+        path: '/1'
+      },
+      {
+        text: 'two',
+        path: '/2'
+      },
+      {
+        text: 'three',
+        path: '/3'
+      },
+      {
+        text: 'four',
+        path: '/4'
+      },
+    ])
+    const nav = computed(()=>{
+      const index = options.findIndex(item=>item.path === location.pathname)
+      return options.slice(0,index+1)
+    })
     return {
-      openDrawer,open
+      options,nav
     }
   }
 }
