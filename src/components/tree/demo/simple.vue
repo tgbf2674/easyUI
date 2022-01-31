@@ -1,5 +1,5 @@
 <template>
-  <tree :list="treeData"></tree>
+  <tree :options="treeData" :checkbox="true"></tree>
 </template>
 
 <script>

@@ -1,6 +1,8 @@
 <template>
   <div @click="handleClick" class="switch">
+    <div style="margin-right: 10px; width: 50px">
     {{ curChecked  }}
+    </div>
     <input type="checkbox" ref="check" class="switch-input" v-model="curChecked">
     <span :class="['core', curChecked? 'on' : 'off']"></span>
   </div>
@@ -40,7 +42,7 @@ export default {
     border: 1px solid #999;
     border-radius: 18px;
     position: relative;
-    transition: border-color .3s, background-color .3s;
+    transition: background-color .3s;
     &.off{
       background-color: indianred;
       &:after{
